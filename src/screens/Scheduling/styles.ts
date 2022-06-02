@@ -1,8 +1,8 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
-import styled, {css} from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
-interface DateValueProps{
+interface DateValueProps {
   selected: boolean;
 }
 
@@ -14,8 +14,11 @@ export const Container = styled.View`
 export const Header = styled.View`
   width: 100%;
   height: 325px;
+
   background-color: ${({ theme }) => theme.colors.header};
+
   justify-content: center;
+
   padding: 25px;
   padding-top: ${getStatusBarHeight() + 30}px;
 `;
@@ -30,9 +33,11 @@ export const Title = styled.Text`
 
 export const RentalPeriod = styled.View`
   width: 100%;
+
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  
   margin: 32px 0;
 `;
 
@@ -51,7 +56,7 @@ export const DateValue = styled.Text<DateValueProps>`
   font-family: ${({ theme }) => theme.fonts.primary_500};
   font-size: ${RFValue(15)}px;
 
-  ${({ selected, theme}) => !selected && css`
+  ${({ selected, theme }) => !selected && css`
     border-bottom-width: 1px;
     border-bottom-color: ${theme.colors.text};
     padding-bottom: 5px;
@@ -59,7 +64,7 @@ export const DateValue = styled.Text<DateValueProps>`
 `;
 
 export const Content = styled.ScrollView.attrs({
-  contentContainerStyle:{
+  contentContainerStyle: {
     paddingBottom: 24
   },
   showsVerticalScrollIndicator: false
