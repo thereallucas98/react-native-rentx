@@ -1,6 +1,6 @@
-import { getStatusBarHeight } from 'react-native-iphone-x-helper';
-import { RFValue } from 'react-native-responsive-fontsize';
-import styled from 'styled-components/native';
+import { getStatusBarHeight } from "react-native-iphone-x-helper";
+import { RFValue } from "react-native-responsive-fontsize";
+import styled from "styled-components/native";
 
 export const Container = styled.View`
   flex: 1;
@@ -22,7 +22,7 @@ export const Title = styled.Text`
   font-family: ${({ theme }) => theme.fonts.secondary_600};
   font-size: ${RFValue(30)}px;
 
-  margin-top:24px;
+  margin-top: 24px;
 `;
 
 export const SubTitle = styled.Text`
@@ -30,7 +30,7 @@ export const SubTitle = styled.Text`
   font-family: ${({ theme }) => theme.fonts.secondary_400};
   font-size: ${RFValue(15)}px;
 
-  margin-top:24px;
+  margin-top: 24px;
 `;
 
 export const Content = styled.View`
@@ -90,5 +90,3 @@ export const CarFooterDate = styled.Text`
   font-family: ${({ theme }) => theme.fonts.primary_400};
   font-size: ${RFValue(13)}px;
 `;
-
-
