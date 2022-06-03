@@ -1,49 +1,30 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 
 //importando telas
-import { Home } from '../screens/Home';
-import { CarDetails } from '../screens/CarDetails';
-import { Scheduling } from '../screens/Scheduling';
-import { SchedulingDetails } from '../screens/SchedulingDetails';
-import { SchedulingComplete } from '../screens/SchedulingComplete';
-import { MyCars } from '../screens/MyCars';
+import { Home } from "../screens/Home";
+import { CarDetails } from "../screens/CarDetails";
+import { Scheduling } from "../screens/Scheduling";
+import { SchedulingDetails } from "../screens/SchedulingDetails";
+import { SchedulingComplete } from "../screens/SchedulingComplete";
+import { MyCars } from "../screens/MyCars";
 
 const { Navigator, Screen } = createStackNavigator();
 
-export function StackRoutes(){
-    return(
-        <Navigator screenOptions={{headerShown: false}} >
-            <Screen 
-                name='Home'
-                component={Home}
-            />
+export function StackRoutes() {
+  return (
+    <Navigator screenOptions={{ headerShown: false }}>
+      <Screen name="Home" component={Home} />
 
-            <Screen 
-                name='CarDetails'
-                component={CarDetails}
-            />
+      <Screen name="CarDetails" component={CarDetails} />
 
-            <Screen 
-                name='Scheduling'
-                component={Scheduling}
-            />
+      <Screen name="Scheduling" component={Scheduling} />
 
-            <Screen 
-                name='SchedulingDetails'
-                component={SchedulingDetails}
-            />
+      <Screen name="SchedulingDetails" component={SchedulingDetails} />
 
-            <Screen 
-                name='SchedulingComplete'
-                component={SchedulingComplete}
-            />
+      <Screen name="SchedulingComplete" component={SchedulingComplete} />
 
-            <Screen 
-                name='MyCars'
-                component={MyCars}
-            />
-        </Navigator>
-    )
+      <Screen name="MyCars" component={MyCars} />
+    </Navigator>
+  );
 }
-
