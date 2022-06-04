@@ -3,14 +3,13 @@ import { useNavigation } from "@react-navigation/native";
 import { api } from "../../services/api";
 import { CarDTO } from "../../dtos/carDTO";
 import { StatusBar } from "react-native";
-import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { RFValue } from "react-native-responsive-fontsize";
 import { Ionicons } from "@expo/vector-icons";
 
 //Importando components
 import { Car } from "../../components/Car";
 import { Load } from "../../components/Load";
 import Logo from "../../assets/logo.svg";
-import { getAccessoryIcon } from "../../utils/getAccessoryIcons";
 import {
   Container,
   Header,
@@ -20,7 +19,6 @@ import {
   MyCarsButton,
 } from "./styles";
 import { useTheme } from "styled-components";
-import { RectButtonProps } from "react-native-gesture-handler";
 
 export function Home() {
   const navigation = useNavigation();
