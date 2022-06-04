@@ -74,6 +74,7 @@ export function Scheduling() {
     let start = !lastSelectedDate.timestamp ? date : lastSelectedDate;
     let end = date;
 
+    // Validar que a menor data sempre estará no start
     if (start.timestamp > end.timestamp) {
       start = end;
       end = start;
