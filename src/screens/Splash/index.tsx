@@ -6,14 +6,17 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
-  Easing,
   interpolate,
   Extrapolate,
+  runOnJS
 } from "react-native-reanimated";
 import { Container } from "./styles";
+import { StatusBar } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export function Splash() {
   const splashAnimation = useSharedValue(0);
+  const navigation = useNavigation();
 
   const brandStyle = useAnimatedStyle(() => {
     return {
@@ -48,18 +51,34 @@ export function Splash() {
   });
 
   useEffect(() => {
-    splashAnimation.value = withTiming(50, {
-      duration: 5000,
-    });
+    splashAnimation.value = withTiming(
+      50,
+      {
+        duration: 1000,
+      },
+      () => {
+        'worklet'
+        runOnJS(startApp)()
+      }
+    );
   }, []);
+
+  function startApp() {
+    navigation.navigate("Home");
+  }
 
   return (
     <Container>
-      <Animated.View style={[brandStyle, { position: 'absolute' }]}>
+      <StatusBar
+        barStyle="light-content"
+        translucent
+        backgroundColor="transparent"
+      />
+      <Animated.View style={[brandStyle, { position: "absolute" }]}>
         <BrandSvg width={80} height={50} />
       </Animated.View>
 
-      <Animated.View style={[logoStyle, { position: 'absolute' }]}>
+      <Animated.View style={[logoStyle, { position: "absolute" }]}>
         <LogoSvg width={180} height={20} />
       </Animated.View>
     </Container>
