@@ -11,14 +11,13 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   useAnimatedGestureHandler,
-  withSpring,
 } from "react-native-reanimated";
 
 const ButtonAnimated = Animated.createAnimatedComponent(RectButton);
 
 //Importando components
 import { Car } from "../../components/Car";
-import { Load } from "../../components/Load";
+import { LoadAnimation } from "../../components/LoadAnimation";
 import Logo from "../../assets/logo.svg";
 import { Container, Header, TotalCars, HeaderContent, CarList } from "./styles";
 import { useTheme } from "styled-components";
@@ -100,7 +99,7 @@ export function Home() {
       </Header>
 
       {loading ? (
-        <Load />
+        <LoadAnimation />
       ) : (
         <CarList
           data={cars}

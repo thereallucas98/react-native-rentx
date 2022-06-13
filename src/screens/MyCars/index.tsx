@@ -6,8 +6,8 @@ import { api } from "../../services/api";
 import { BackButton } from "../../components/BackButton";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useTheme } from "styled-components";
-import { Load } from "../../components/Load";
 import { AntDesign } from "@expo/vector-icons";
+import { LoadAnimation } from "../../components/LoadAnimation";
 
 import {
   Container,
@@ -79,7 +79,7 @@ export function MyCars() {
       </Header>
 
       {loading ? (
-        <Load />
+        <LoadAnimation />
       ) : (
         <Content>
           <Appointments>
