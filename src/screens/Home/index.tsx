@@ -3,7 +3,7 @@ import { RectButton, PanGestureHandler } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { api } from "../../services/api";
 import { CarDTO } from "../../dtos/carDTO";
-import { StatusBar, StyleSheet } from "react-native";
+import { StatusBar, StyleSheet, BackHandler } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -20,13 +20,7 @@ const ButtonAnimated = Animated.createAnimatedComponent(RectButton);
 import { Car } from "../../components/Car";
 import { Load } from "../../components/Load";
 import Logo from "../../assets/logo.svg";
-import {
-  Container,
-  Header,
-  TotalCars,
-  HeaderContent,
-  CarList,
-} from "./styles";
+import { Container, Header, TotalCars, HeaderContent, CarList } from "./styles";
 import { useTheme } from "styled-components";
 
 export function Home() {
@@ -47,18 +41,15 @@ export function Home() {
   });
 
   const onGestureEvent = useAnimatedGestureHandler({
-    onStart(_, ctx: any){
+    onStart(_, ctx: any) {
       ctx.positionX = positionX.value;
       ctx.positionY = positionY.value;
     },
-    onActive(event, ctx: any){
+    onActive(event, ctx: any) {
       positionX.value = ctx.positionX + event.translationX;
       positionY.value = ctx.positionY + event.translationY;
     },
-    onEnd(){
-      positionX.value = withSpring(0);
-      positionY.value = withSpring(0);
-    }
+    onEnd() {},
   });
 
   const theme = useTheme();
@@ -86,6 +77,12 @@ export function Home() {
     fetchCars();
   }, []);
 
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", () => {
+      return true;
+    });
+  }, []);
+
   return (
     <Container>
       <StatusBar
@@ -98,7 +95,7 @@ export function Home() {
         <HeaderContent>
           <Logo width={RFValue(108)} height={RFValue(12)} />
 
-          <TotalCars>Total de {cars.length} carros</TotalCars>
+          {!loading && <TotalCars>Total de {cars.length} carros</TotalCars>}
         </HeaderContent>
       </Header>
 
