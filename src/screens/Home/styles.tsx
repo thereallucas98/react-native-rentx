@@ -34,17 +34,3 @@ export const CarList = styled(FlatList as new () => FlatList<CarDTO>).attrs({
     padding: 24,
   },
 })`` as React.ComponentType as new <DataListProps>() => FlatList<DataListProps>;
-
-export const MyCarsButton = styled(RectButton)`
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  background-color: ${({ theme }) => theme.colors.main};
-
-  justify-content: center;
-  align-items: center;
-
-  position: absolute;
-  bottom: 13px;
-  right: 22px;
-`;
