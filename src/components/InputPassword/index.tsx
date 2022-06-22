@@ -31,7 +31,7 @@ export function InputPassword({ iconName, value, ...rest }: InputProps) {
   }
 
   return (
-    <Container>
+    <Container isFocused={isFocused}>
       <IconContainer>
         <Feather
           name={iconName}
