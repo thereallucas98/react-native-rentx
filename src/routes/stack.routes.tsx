@@ -17,7 +17,7 @@ const { Navigator, Screen } = createStackNavigator();
 
 export function StackRoutes() {
   return (
-    <Navigator screenOptions={{ headerShown: false }} initialRouteName="SignUpFirstStep">
+    <Navigator screenOptions={{ headerShown: false }} initialRouteName="SignIn">
       <Screen name="Splash" component={Splash} />
 
       <Screen
