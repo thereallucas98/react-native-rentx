@@ -60,7 +60,7 @@ export function SchedulingDetails() {
   const navigation = useNavigation();
   const route = useRoute();
   const { car, dates } = route.params as Params;
-  const rentTotal = Number(dates.length * car.rent.price);
+  const rentTotal = Number(dates.length * car.price);
 
   async function handleConfirmRental() {
     const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);
@@ -86,7 +86,13 @@ export function SchedulingDetails() {
         id: car.id,
         unavailable_dates,
       })
-      .then(() => navigation.navigate("SchedulingComplete"))
+      .then(() => {
+        navigation.navigate("Confirmation", {
+          nextScreenRoute: "Home",
+          title: "Carro alugado!",
+          message: `Agora você só precisa ir\naté a concessionária da RENTX\npegar o seu automóvel.`,
+        });
+      })
       .catch(() => {
         setLoading(false);
         Alert.alert("Não foi possível confirmar o agendamento");
@@ -125,8 +131,8 @@ export function SchedulingDetails() {
           </Description>
 
           <Rent>
-            <Period>{car.rent.period} </Period>
-            <Price>RS {car.rent.price} </Price>
+            <Period>{car.period} </Period>
+            <Price>RS {car.price} </Price>
           </Rent>
         </Details>
 
@@ -168,7 +174,7 @@ export function SchedulingDetails() {
         <RentalPrice>
           <RentalPriceLabel>TOTAL</RentalPriceLabel>
           <RentalPriceDetails>
-            <RentalPriceQuota>{`R$ ${car.rent.price} x ${dates.length} diárias`}</RentalPriceQuota>
+            <RentalPriceQuota>{`R$ ${car.price} x ${dates.length} diárias`}</RentalPriceQuota>
             <RentalPriceTotal> {rentTotal} </RentalPriceTotal>
           </RentalPriceDetails>
         </RentalPrice>
