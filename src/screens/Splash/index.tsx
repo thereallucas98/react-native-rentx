@@ -8,7 +8,7 @@ import Animated, {
   withTiming,
   interpolate,
   Extrapolate,
-  runOnJS
+  runOnJS,
 } from "react-native-reanimated";
 import { Container } from "./styles";
 import { StatusBar } from "react-native";
@@ -57,14 +57,14 @@ export function Splash() {
         duration: 1000,
       },
       () => {
-        'worklet'
-        runOnJS(startApp)()
+        "worklet";
+        runOnJS(startApp)();
       }
     );
   }, []);
 
   function startApp() {
-    navigation.navigate("Home");
+    navigation.navigate("SignIn");
   }
 
   return (

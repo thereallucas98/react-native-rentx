@@ -7,6 +7,7 @@ type ScreenDTO = {
 declare namespace ReactNavigation {
   export interface RootParamList {
     Splash: undefined
+    SignIn: undefined
     SignUpFirstStep: undefined
     SignUpSecondStep: {
       user:
