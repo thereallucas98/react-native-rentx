@@ -4,6 +4,9 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from "react-native";
+
+import * as ImagePicker from "expo-image-picker";
+
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
@@ -35,6 +38,9 @@ export function Profile() {
   const { user, signOut, updatedUser } = useAuth();
 
   const [option, setOption] = useState<"dataEdit" | "passwordEdit">("dataEdit");
+  const [avatar, setAvatar] = useState(user.avatar);
+  const [name, setName] = useState(user.name);
+  const [driverLicense, setDriverLicense] = useState(user.driver_license);
 
   const theme = useTheme();
   const navigation = useNavigation();
@@ -45,7 +51,24 @@ export function Profile() {
 
   function handleSignOut() {}
 
-  function handleAvatarSelect() {}
+  async function handleAvatarSelect() {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 1,
+    });
+
+    if (result.cancelled) {
+      return;
+    }
+
+    const { uri } = result as ImagePicker.ImageInfo;
+
+    if (uri) {
+      setAvatar(uri);
+    }
+  }
 
   function handleOptionChange(option: "dataEdit" | "passwordEdit") {
     setOption(option);
@@ -65,9 +88,7 @@ export function Profile() {
             </HeaderTop>
 
             <PhotoContainer>
-              <Photo
-                source={{ uri: "https://github.com/thereallucas98.png" }}
-              />
+              {!!avatar && <Photo source={{ uri: avatar }} />}
               <PhotoButton onPress={handleAvatarSelect}>
                 <Feather name="camera" size={24} color={theme.colors.shape} />
               </PhotoButton>
@@ -94,15 +115,26 @@ export function Profile() {
 
             {option === "dataEdit" ? (
               <Section>
-                <Input iconName="user" placeholder="Nome" autoCorrect={false} defaultValue={user.name} />
+                <Input
+                  iconName="user"
+                  placeholder="Nome"
+                  autoCorrect={false}
+                  defaultValue={user.name}
+                  onChangeText={setName}
+                />
 
-                <Input iconName="mail" editable={false} defaultValue={user.email} />
+                <Input
+                  iconName="mail"
+                  editable={false}
+                  defaultValue={user.email}
+                />
 
                 <Input
                   iconName="credit-card"
                   placeholder="CNH"
                   keyboardType="numeric"
                   defaultValue={user.driver_license}
+                  onChangeText={setDriverLicense}
                 />
               </Section>
             ) : (
