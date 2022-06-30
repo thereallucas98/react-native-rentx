@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
+import * as Yup from "yup";
 
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
@@ -33,6 +35,7 @@ import {
   PhotoContainer,
   Section,
 } from "./styles";
+import { Button } from "../../components/Button";
 
 export function Profile() {
   const { user, signOut, updatedUser } = useAuth();
@@ -49,7 +52,9 @@ export function Profile() {
     navigation.goBack();
   }
 
-  function handleSignOut() {}
+  function handleOptionChange(option: "dataEdit" | "passwordEdit") {
+    setOption(option);
+  }
 
   async function handleAvatarSelect() {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -70,8 +75,51 @@ export function Profile() {
     }
   }
 
-  function handleOptionChange(option: "dataEdit" | "passwordEdit") {
-    setOption(option);
+  async function handleSignOut() {
+    Alert.alert(
+      "Tem certeza?",
+      "Se você sair, irá precisar de internet para conectar-se novamente.",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => {},
+        },
+        {
+          text: "Sair",
+          onPress: () => signOut(),
+        },
+      ]
+    );
+  }
+
+  async function handleUpdateProfile() {
+    try {
+      const schema = Yup.object().shape({
+        driverLicense: Yup.string().required("CNH é obrigatória"),
+        name: Yup.string().required("Nome é obrigatório"),
+      });
+
+      const data = { name, driverLicense };
+      await schema.validate(data);
+
+      await updatedUser({
+        id: user.id,
+        user_id: user.user_id,
+        email: user.email,
+        name,
+        driver_license: driverLicense,
+        avatar,
+        token: user.token,
+      });
+
+      Alert.alert("Perfil atualizado!");
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        Alert.alert("Opa", error.message);
+      } else {
+        Alert.alert("Não foi possível atualizar o perfil");
+      }
+    }
   }
 
   return (
@@ -156,6 +204,8 @@ export function Profile() {
                 />
               </Section>
             )}
+
+            <Button title="Salvar alterações" onPress={handleUpdateProfile} />
           </Content>
         </Container>
       </TouchableWithoutFeedback>

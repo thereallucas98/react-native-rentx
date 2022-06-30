@@ -69,7 +69,8 @@ export const PhotoButton = styled(RectButton)`
 
 export const Content = styled.View`
   padding: 0 24px;
-  margin-top: 122px;
+  margin-top: 110px;
+
 `;
 
 export const Options = styled.View`
