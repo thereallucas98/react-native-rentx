@@ -1,23 +1,49 @@
 import React, { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { api } from "../../services/api";
-import { CarDTO } from "../../dtos/carDTO";
 import { StatusBar } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { CarDTO } from "../../dtos/carDTO";
 import { RFValue } from "react-native-responsive-fontsize";
+import { useNetInfo } from "@react-native-community/netinfo";
+import { synchronize } from "@nozbe/watermelondb/sync";
 
 //Importando components
 import { Car } from "../../components/Car";
 import { LoadAnimation } from "../../components/LoadAnimation";
 import Logo from "../../assets/logo.svg";
+
+import { api } from "../../services/api";
+import { database } from "../../database";
+
 import { Container, Header, TotalCars, HeaderContent, CarList } from "./styles";
+import { Car as ModelCar } from "../../database/models/Car";
 
 export function Home() {
+  const netInfo = useNetInfo();
   const navigation = useNavigation();
-  const [cars, setCars] = useState<CarDTO[]>([]);
+
+  const [cars, setCars] = useState<ModelCar[]>([]);
   const [loading, setLoading] = useState(true);
 
-  function handleCarDetails(car: CarDTO) {
+  function handleCarDetails(car: ModelCar) {
     navigation.navigate("CarDetails", { car });
+  }
+
+  async function offlineSynchronize() {
+    await synchronize({
+      database,
+      pullChanges: async ({ lastPulledAt }) => {
+        const response = await api.get(
+          `cars/sync/pull?lastPulledVersion=${lastPulledAt || 0}`
+        );
+
+        const { changes, latestVersion } = response.data;
+        return { changes, timestamp: latestVersion };
+      },
+      pushChanges: async ({ changes }) => {
+        const user = changes.users;
+        await api.post("/users/sync", user);
+      },
+    });
   }
 
   useEffect(() => {
@@ -43,8 +69,14 @@ export function Home() {
 
     return () => {
       isMounted = false;
-    }
+    };
   }, []);
+
+  useEffect(() => {
+    if (netInfo.isConnected === true) {
+      offlineSynchronize();
+    }
+  }, [netInfo.isConnected]);
 
   return (
     <Container>

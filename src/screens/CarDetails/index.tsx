@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 import { StatusBar, StyleSheet } from "react-native";
 import { useTheme } from "styled-components";
@@ -17,6 +17,7 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 
+import { Car } from "../../database/models/Car";
 import {
   Container,
   Header,
@@ -36,13 +37,14 @@ import { CarDTO } from "../../dtos/carDTO";
 
 //tipar os parametros que vem da tela home
 interface Params {
-  car: CarDTO;
+  car: Car;
 }
 
 export function CarDetails() {
   const navigation = useNavigation();
   const route = useRoute();
   const { car } = route.params as Params;
+  const [carUpdate, setCarUpdate] = useState<CarDTO>({} as CarDTO);
 
   const theme = useTheme();
 
@@ -94,7 +96,13 @@ export function CarDetails() {
 
         <CarImages>
           <Animated.View style={[sliderCarsStyleAnimation]}>
-            <ImageSlider imagesUrl={car.photos} />
+            <ImageSlider
+              imagesUrl={
+                !!carUpdate.photos
+                  ? carUpdate.photos
+                  : [{ id: car.thumbnail, photo: car.thumbnail }]
+              }
+            />
           </Animated.View>
         </CarImages>
       </Animated.View>
@@ -120,15 +128,17 @@ export function CarDetails() {
           </Rent>
         </Details>
 
-        <Accessories>
-          {car.accessories.map((acessory) => (
-            <Accessory
-              key={acessory.type}
-              name={acessory.name}
-              icon={getAccessoryIcon(acessory.type)}
-            />
-          ))}
-        </Accessories>
+        {carUpdate.accessories && (
+          <Accessories>
+            {carUpdate.accessories.map((accessory) => (
+              <Accessory
+                key={accessory.type}
+                name={accessory.name}
+                icon={getAccessoryIcon(accessory.type)}
+              />
+            ))}
+          </Accessories>
+        )}
 
         <About>{car.about}</About>
       </Animated.ScrollView>
